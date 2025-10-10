@@ -17,9 +17,10 @@ import java.util.UUID;
 public class UserFisico {
     @Id
     @GeneratedValue
-    private UUID id;
+    private UUID usuarioid;
 
     @OneToOne
+    @MapsId
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private User usuario;
 
@@ -30,7 +31,7 @@ public class UserFisico {
     private String genero;
 
     @Column(name = "data_nascimento", nullable = false)
-    private java.time.LocalDate dataNascimento;
+    private java.time.LocalDate data_nascimento;
 
     @Column(nullable = false, unique = true, length = 11)
     private String cpf;
