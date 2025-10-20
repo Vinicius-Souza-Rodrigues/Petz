@@ -1,13 +1,14 @@
 package Backend.Backend.User;
 
+import Backend.Backend.Auth.TokenService;
 import Backend.Backend.User.Dto.LoginDto;
 import Backend.Backend.User.Dto.RegisterDto;
+import Backend.Backend.User.Model.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,14 +19,17 @@ public class UserController {
     private final UserService userService;
 
     private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<Authentication> login(@RequestBody @Valid LoginDto request) {
+    public ResponseEntity<String> login(@RequestBody @Valid LoginDto request) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(request.email(), request.senha());
-
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok(auth);
+        var user = (User) auth.getPrincipal();
+        var token = tokenService.gerarToken(user);
+
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/register")
