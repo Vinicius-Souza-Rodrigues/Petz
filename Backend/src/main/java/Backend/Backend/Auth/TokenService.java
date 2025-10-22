@@ -16,7 +16,7 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secretKey;
 
-    private static final long EXPIRATION_TIME = 86400000;
+    private static final long EXPIRATION_TIME = 30000;
 
     public String gerarToken(User user) {
         Date agora = new Date();

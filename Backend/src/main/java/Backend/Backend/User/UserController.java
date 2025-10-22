@@ -23,7 +23,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginDto request) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(request.email(), request.senha());
+        var usernamePassword = new UsernamePasswordAuthenticationToken(request.input(), request.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var user = (User) auth.getPrincipal();
