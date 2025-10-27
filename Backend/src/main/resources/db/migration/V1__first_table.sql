@@ -26,20 +26,20 @@ CREATE TABLE user_juridico (
 );
 
 CREATE TABLE item (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
     preco DECIMAL(10,2) NOT NULL
 );
 
 CREATE TABLE especificacao (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     nome VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE item_especificacao (
-    id SERIAL PRIMARY KEY,
-    item_id INT NOT NULL REFERENCES item(id) ON DELETE CASCADE,
-    especificacao_id INT NOT NULL REFERENCES especificacao(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    item_id UUID NOT NULL REFERENCES item(id) ON DELETE CASCADE,
+    especificacao_id UUID NOT NULL REFERENCES especificacao(id) ON DELETE CASCADE,
     valor VARCHAR(255) NOT NULL
 );

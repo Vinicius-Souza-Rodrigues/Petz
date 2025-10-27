@@ -3,6 +3,8 @@ package Backend.Backend.Especificacao;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "especificacao")
 @Getter
@@ -13,8 +15,8 @@ import lombok.*;
 public class Especificacao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String nome;

@@ -13,16 +13,16 @@ public class PetsItensController {
     public final PetsItensService petsItensService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<String> adicionar(@PathVariable ItensDto request) {
-
-
-
-        return ResponseEntity.ok("adicionado");
+    public ResponseEntity<String> adicionar(@RequestBody ItensDto request) {
+        System.out.println(request);
+        String resposta = petsItensService.Adicionar(request);
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/listar")
     public ResponseEntity<String> produtos(){
 
+        System.out.println("teste listar");
 
         return ResponseEntity.ok("testado");
     }

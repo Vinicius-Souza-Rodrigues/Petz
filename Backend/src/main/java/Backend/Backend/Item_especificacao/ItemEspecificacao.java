@@ -5,6 +5,8 @@ import Backend.Backend.PetsItens.PetsItens;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "item_especificacao")
 @Getter
@@ -15,8 +17,8 @@ import lombok.*;
 public class ItemEspecificacao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
