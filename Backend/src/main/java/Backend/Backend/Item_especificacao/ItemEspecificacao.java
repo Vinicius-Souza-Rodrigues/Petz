@@ -24,7 +24,7 @@ public class ItemEspecificacao {
     @JoinColumn(name = "item_id", nullable = false)
     private PetsItens item;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "especificacao_id", nullable = false)
     private Especificacao especificacao;
 

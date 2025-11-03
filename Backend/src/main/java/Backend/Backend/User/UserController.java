@@ -23,6 +23,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginDto request) {
+
+        System.out.println("teste");
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(request.input(), request.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 

@@ -10,7 +10,6 @@ public record RegisterDto(
         String confirmarSenha,
         String tipoUsuario,
 
-        // Físico
         String nome,
         String genero,
         LocalDate dataNascimento,

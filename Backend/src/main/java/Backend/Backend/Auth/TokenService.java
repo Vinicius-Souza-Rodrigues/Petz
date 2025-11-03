@@ -1,6 +1,7 @@
 package Backend.Backend.Auth;
 
 import Backend.Backend.User.Model.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class TokenService {
@@ -43,6 +45,19 @@ public class TokenService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public UUID getUsuarioId(String token) {
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        String id = claims.get("id", String.class);
+        return UUID.fromString(id);
     }
 }
 

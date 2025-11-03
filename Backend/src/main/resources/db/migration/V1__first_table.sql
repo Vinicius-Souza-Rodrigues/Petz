@@ -43,3 +43,21 @@ CREATE TABLE item_especificacao (
     especificacao_id UUID NOT NULL REFERENCES especificacao(id) ON DELETE CASCADE,
     valor VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE animais (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+
+    nome VARCHAR(100) NOT NULL,
+    usuario_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+
+    sexo VARCHAR(100) NOT NULL,
+    porte VARCHAR(100) NOT NULL,
+
+    peso VARCHAR(100) NOT NULL,
+    idade VARCHAR(100) NOT NULL,
+    microchip VARCHAR(100) NOT NULL,
+    especie VARCHAR(100) NOT NULL,
+    raca VARCHAR(100) NOT NULL,
+    localizacao VARCHAR(100) NOT NULL,
+    descricao VARCHAR(100) NOT NULL
+)

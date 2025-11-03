@@ -1,4 +1,10 @@
 package Backend.Backend.PetsAnimais;
 
-public interface PetsAnimaisRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface PetsAnimaisRepository extends JpaRepository<PetsAnimais, UUID> {
 }

@@ -14,7 +14,6 @@ public class PetsItensController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<String> adicionar(@RequestBody ItensDto request) {
-        System.out.println(request);
         String resposta = petsItensService.Adicionar(request);
         return ResponseEntity.ok(resposta);
     }
