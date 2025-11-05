@@ -21,8 +21,8 @@ public class PetsItensController {
     @GetMapping("/listar")
     public ResponseEntity<String> produtos(){
 
-        System.out.println("teste listar");
+        String itens = petsItensService.Listar();
 
-        return ResponseEntity.ok("testado");
+        return ResponseEntity.ok(itens);
     }
 }

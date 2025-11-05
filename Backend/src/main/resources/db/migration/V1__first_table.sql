@@ -60,4 +60,21 @@ CREATE TABLE animais (
     raca VARCHAR(100) NOT NULL,
     localizacao VARCHAR(100) NOT NULL,
     descricao VARCHAR(100) NOT NULL
-)
+);
+
+CREATE TABLE favoritos_animal (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+
+    usuario_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+    animais_id UUID NOT NULL REFERENCES animais(id) ON DELETE CASCADE,
+    UNIQUE (usuario_id, animais_id)
+);
+
+CREATE TABLE favoritos_item (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+
+    usuario_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+    itens_id UUID NOT NULL REFERENCES item(id) ON DELETE CASCADE,
+    UNIQUE (usuario_id, itens_id)
+
+);
