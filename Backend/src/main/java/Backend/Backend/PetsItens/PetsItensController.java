@@ -19,10 +19,7 @@ public class PetsItensController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<String> produtos(){
-
-        String itens = petsItensService.Listar();
-
-        return ResponseEntity.ok(itens);
+    public ResponseEntity<?> listarItens() {
+        return ResponseEntity.ok(petsItensService.Listar());
     }
 }

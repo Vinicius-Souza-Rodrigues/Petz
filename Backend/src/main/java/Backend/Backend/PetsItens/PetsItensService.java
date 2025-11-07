@@ -5,12 +5,15 @@ import Backend.Backend.Especificacao.Especificacao;
 import Backend.Backend.Especificacao.EspecificacaoRepository;
 import Backend.Backend.Item_especificacao.ItemEspecificacao;
 import Backend.Backend.PetsItens.Dto.ItensDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -53,16 +56,13 @@ public class PetsItensService {
             repository.save(item);
 
         } catch (RuntimeException exc) {
-            return "Nao foi possível adicionar o item";
+            return "Não foi possível adicionar o item";
         }
 
-        return "Item e especificaçoes salvos com sucesso!";
+        return "Item e especificações salvos com sucesso!";
     }
 
-    public String Listar() {
-
-        PetsItens itens = repository.listarItensComEspecificacoes().
+    public List<Map<String, Object>> Listar() {
+        return repository.listarItensComEspecificacoes();
     }
-
-
 }
