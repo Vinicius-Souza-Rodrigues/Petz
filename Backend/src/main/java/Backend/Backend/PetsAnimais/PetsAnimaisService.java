@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,7 +21,7 @@ public class PetsAnimaisService {
     private final FavoritosRepository favoritosRepository;
 
     @Transactional
-    public String Adicionar(PetsAnimaisDto dto, String token) {
+    public String adicionar(PetsAnimaisDto dto, String token) {
         try {
             UUID usuarioId = tokenService.getUsuarioId(token);
 
@@ -51,28 +52,33 @@ public class PetsAnimaisService {
         return "Deu certo, animal adicionado!";
     }
 
-    @Transactional
+
     public String favoritarAnimal(UUID animalId, String token) {
         try {
             UUID usuarioId = tokenService.getUsuarioId(token);
 
-            PetsAnimais petsAnimais = petsAnimaisRepository.findById(animalId)
-                    .orElseThrow(() -> new RuntimeException("Animal nao encontrado"));
+            Optional<FavoritosAnimais> favoritoExistente = favoritosRepository.findByUsuarioIdAndPetsAnimaisId(usuarioId, animalId);
+
+            if (favoritoExistente.isPresent()) {
+                favoritosRepository.delete(favoritoExistente.get());
+                return "Animal removido dos favoritos";
+            }
 
             User usuario = userRepository.findById(usuarioId)
-                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                    .orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
 
-            FavoritosAnimais favoritosAnimais = new FavoritosAnimais();
+            PetsAnimais animal = petsAnimaisRepository.findById(animalId)
+                    .orElseThrow(() -> new RuntimeException("Animal nao encontrado"));
 
-            favoritosAnimais.setPetsAnimais(petsAnimais);
-            favoritosAnimais.setUsuario(usuario);
+            FavoritosAnimais novoFavorito = new FavoritosAnimais();
+            novoFavorito.setUsuario(usuario);
+            novoFavorito.setPetsAnimais(animal);
 
-            //favoritosRepository.save(favoritosAnimais);
+            favoritosRepository.save(novoFavorito);
+            return "Animal adicionado aos favoritos!";
 
         } catch (RuntimeException e) {
-            throw new RuntimeException("Lista nao pode ser exibida");
+            throw new RuntimeException("Erro ao favoritar");
         }
-
-        return "Favoritado";
     }
 }

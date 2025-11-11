@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "favoritos_animais")
+@Table(name = "favoritos_animal")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -1,6 +1,9 @@
 package Backend.Backend.PetsItens.Dto;
 
+import Backend.Backend.Especificacao.Dto.EspecificacaoDto;
+
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 public record ItemListagemDto(
@@ -8,5 +11,5 @@ public record ItemListagemDto(
         String nome,
         String descricao,
         BigDecimal preco,
-        String especificacoes
+        List<EspecificacaoDto> especificacoes
 ) {}

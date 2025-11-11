@@ -18,11 +18,11 @@ public class PetsAnimaisController {
     public ResponseEntity<String> adicionar(@RequestBody PetsAnimaisDto dto, @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
 
-        String animal = animaisService.Adicionar(dto, token);
+        String animal = animaisService.adicionar(dto, token);
         return ResponseEntity.ok(animal);
     }
 
-    @GetMapping("/favoritar/{animalId}")
+    @PostMapping("/favoritar/{animalId}")
     public ResponseEntity<String> favoritarAnimal(@PathVariable UUID animalId, @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
 

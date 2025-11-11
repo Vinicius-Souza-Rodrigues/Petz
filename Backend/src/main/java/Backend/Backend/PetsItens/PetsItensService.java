@@ -4,16 +4,14 @@ import Backend.Backend.Especificacao.Dto.EspecificacaoDto;
 import Backend.Backend.Especificacao.Especificacao;
 import Backend.Backend.Especificacao.EspecificacaoRepository;
 import Backend.Backend.Item_especificacao.ItemEspecificacao;
+import Backend.Backend.PetsItens.Dto.ItemListagemDto;
 import Backend.Backend.PetsItens.Dto.ItensDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class PetsItensService {
     private final EspecificacaoRepository especificacaoRepository;
 
     @Transactional
-    public String Adicionar(ItensDto dto) {
+    public String adicionar(ItensDto dto) {
         try {
             PetsItens item = new PetsItens();
             item.setNome(dto.nome());
@@ -62,7 +60,27 @@ public class PetsItensService {
         return "Item e especificações salvos com sucesso!";
     }
 
-    public List<Map<String, Object>> Listar() {
-        return repository.listarItensComEspecificacoes();
+    public List<ItemListagemDto> listar() {
+        List<PetsItens> itens = repository.findAll();
+        List<ItemListagemDto> resposta = new ArrayList<>();
+
+        for (PetsItens item : itens) {
+            List<EspecificacaoDto> especificacoes = item.getEspecificacoes().stream()
+                    .map(ie -> new EspecificacaoDto(
+                            ie.getEspecificacao().getNome(),
+                            ie.getValor()
+                    ))
+                    .toList();
+
+            resposta.add(new ItemListagemDto(
+                    item.getId(),
+                    item.getNome(),
+                    item.getDescricao(),
+                    item.getPreco(),
+                    especificacoes
+            ));
+        }
+
+        return resposta;
     }
 }

@@ -14,12 +14,12 @@ public class PetsItensController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<String> adicionar(@RequestBody ItensDto request) {
-        String resposta = petsItensService.Adicionar(request);
+        String resposta = petsItensService.adicionar(request);
         return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/listar")
     public ResponseEntity<?> listarItens() {
-        return ResponseEntity.ok(petsItensService.Listar());
+        return ResponseEntity.ok(petsItensService.listar());
     }
 }
