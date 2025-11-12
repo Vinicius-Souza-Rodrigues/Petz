@@ -1,24 +1,33 @@
 package Backend.Backend.PetsItens;
 
+import Backend.Backend.Auth.TokenService;
 import Backend.Backend.Especificacao.Dto.EspecificacaoDto;
 import Backend.Backend.Especificacao.Especificacao;
 import Backend.Backend.Especificacao.EspecificacaoRepository;
 import Backend.Backend.Item_especificacao.ItemEspecificacao;
 import Backend.Backend.PetsItens.Dto.ItemListagemDto;
 import Backend.Backend.PetsItens.Dto.ItensDto;
+import Backend.Backend.PetsItens.Dto.ItensResponseDto;
+import Backend.Backend.User.Model.User;
+import Backend.Backend.User.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class PetsItensService {
 
-    private final PetsItensRepository repository;
+    private final PetsItensRepository petsItensRepository;
     private final EspecificacaoRepository especificacaoRepository;
+    private final TokenService tokenService;
+    private final UserRepository userRepository;
+    private final FavoritosItemRepository favoritosItemRepository;
 
     @Transactional
     public String adicionar(ItensDto dto) {
@@ -51,7 +60,7 @@ public class PetsItensService {
             }
 
             item.setEspecificacoes(itemEspecificacoes);
-            repository.save(item);
+            petsItensRepository.save(item);
 
         } catch (RuntimeException exc) {
             return "Não foi possível adicionar o item";
@@ -60,8 +69,8 @@ public class PetsItensService {
         return "Item e especificações salvos com sucesso!";
     }
 
-    public List<ItemListagemDto> listar() {
-        List<PetsItens> itens = repository.findAll();
+    public List<ItemListagemDto> listarDetalhes() {
+        List<PetsItens> itens = petsItensRepository.findAll();
         List<ItemListagemDto> resposta = new ArrayList<>();
 
         for (PetsItens item : itens) {
@@ -82,5 +91,47 @@ public class PetsItensService {
         }
 
         return resposta;
+    }
+
+    public List<ItensResponseDto> listar() {
+        List<ItensResponseDto> itens = petsItensRepository.findAll().stream()
+                .map(item -> new ItensResponseDto(
+                        item.getId(),
+                        item.getNome(),
+                        item.getDescricao(),
+                        item.getPreco()
+                ))
+                .toList();
+
+        return itens;
+    }
+
+    public String favoritarItem(UUID itemId, String token) {
+        try {
+            UUID usuarioId = tokenService.getUsuarioId(token);
+
+            Optional<FavoritosItens> favoritoExistente = favoritosItemRepository.findByUsuarioIdAndPetsItensId(usuarioId, itemId);
+
+            if (favoritoExistente.isPresent()) {
+                favoritosItemRepository.delete(favoritoExistente.get());
+                return "Item removido dos favoritos";
+            }
+
+            User usuario = userRepository.findById(usuarioId)
+                    .orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
+
+            PetsItens item = petsItensRepository.findById(itemId)
+                    .orElseThrow(() -> new RuntimeException("Item nao encontrado"));
+
+            FavoritosItens novoFavorito = new FavoritosItens();
+            novoFavorito.setUsuario(usuario);
+            novoFavorito.setPetsItens(item);
+
+            favoritosItemRepository.save(novoFavorito);
+            return "Item adicionado aos favoritos!";
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erro ao favoritar item");
+        }
     }
 }

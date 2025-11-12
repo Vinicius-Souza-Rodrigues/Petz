@@ -1,6 +1,7 @@
 package Backend.Backend.PetsAnimais;
 
 import Backend.Backend.Auth.TokenService;
+import Backend.Backend.PetsAnimais.Dto.AnimaisResponseDto;
 import Backend.Backend.PetsAnimais.Dto.PetsAnimaisDto;
 import Backend.Backend.User.Model.User;
 import Backend.Backend.User.Repository.UserRepository;
@@ -8,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,10 +25,11 @@ public class PetsAnimaisService {
     @Transactional
     public String adicionar(PetsAnimaisDto dto, String token) {
         try {
+            // dps necessita de mudança
             UUID usuarioId = tokenService.getUsuarioId(token);
 
             User usuario = userRepository.findById(usuarioId)
-                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                    .orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
 
             PetsAnimais petsAnimais = new PetsAnimais();
 
@@ -52,9 +55,13 @@ public class PetsAnimaisService {
         return "Deu certo, animal adicionado!";
     }
 
+    public List<AnimaisResponseDto> listar() {
+        AnimaisResponseDto animais = petsAnimaisRepository.findAll().stream().
+    }
 
     public String favoritarAnimal(UUID animalId, String token) {
         try {
+            // dps necessita de mudança
             UUID usuarioId = tokenService.getUsuarioId(token);
 
             Optional<FavoritosAnimais> favoritoExistente = favoritosRepository.findByUsuarioIdAndPetsAnimaisId(usuarioId, animalId);

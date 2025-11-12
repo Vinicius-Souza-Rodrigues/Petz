@@ -1,10 +1,12 @@
 package Backend.Backend.PetsAnimais;
 
 import Backend.Backend.PetsAnimais.Dto.PetsAnimaisDto;
+import Backend.Backend.PetsItens.PetsItens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -30,10 +32,5 @@ public class PetsAnimaisController {
 
 
         return ResponseEntity.ok(favoritado);
-    }
-
-    @GetMapping("/listar")
-    public ResponseEntity<String> produtos(){
-        return ResponseEntity.ok("testado");
     }
 }

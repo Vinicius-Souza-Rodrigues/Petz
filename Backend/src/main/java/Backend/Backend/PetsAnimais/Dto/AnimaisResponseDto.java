@@ -2,7 +2,8 @@ package Backend.Backend.PetsAnimais.Dto;
 
 import java.util.UUID;
 
-public record PetsAnimaisDto(
+public record AnimaisResponseDto(
+        UUID id,
         String nome,
         String sexo,
         String porte,
@@ -13,8 +14,6 @@ public record PetsAnimaisDto(
         String raca,
         String localizacao,
         String descricao,
-
-        UUID usuarioId,
-        String usuarioNome
+        UUID usuarioId
 ) {
 }

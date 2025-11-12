@@ -1,6 +1,5 @@
 package Backend.Backend.PetsItens;
 
-import Backend.Backend.PetsAnimais.PetsAnimais;
 import Backend.Backend.User.Model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoritosItem {
+public class FavoritosItens {
 
     @Id
     @GeneratedValue
@@ -27,6 +26,6 @@ public class FavoritosItem {
     private User usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "itens_id", nullable = false)
     private PetsItens petsItens;
 }
