@@ -25,12 +25,12 @@ public class UserJuridico {
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private User usuario;
 
-    @Column(name = "razao_social")
+    @Column(name = "razao_social", nullable = false)
     private String razao_social;
 
-    @Column(name = "nome_contato")
+    @Column(name = "nome_contato", nullable = false)
     private String nome_contato;
 
-    @Column(name = "cnpj")
+    @Column(name = "cnpj", nullable = false)
     private String cnpj;
 }

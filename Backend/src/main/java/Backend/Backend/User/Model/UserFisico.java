@@ -27,7 +27,7 @@ public class UserFisico {
     @Column(nullable = false, name = "nome")
     private String nome;
 
-    @Column(nullable = false, name = "genero")
+    @Column(nullable = false, name = "genero" )
     private String genero;
 
     @Column(name = "data_nascimento", nullable = false)

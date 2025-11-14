@@ -14,6 +14,7 @@ public record AnimaisResponseDto(
         String raca,
         String localizacao,
         String descricao,
-        UUID usuarioId
+        UUID usuarioId,
+        String usuarioName
 ) {
 }

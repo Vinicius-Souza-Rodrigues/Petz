@@ -1,5 +1,6 @@
 package Backend.Backend.PetsAnimais;
 
+import Backend.Backend.PetsAnimais.Dto.AnimaisResponseDto;
 import Backend.Backend.PetsAnimais.Dto.PetsAnimaisDto;
 import Backend.Backend.PetsItens.PetsItens;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,11 @@ public class PetsAnimaisController {
 
 
         return ResponseEntity.ok(favoritado);
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<AnimaisResponseDto>> listarAnimais() {
+        List<AnimaisResponseDto> animais = animaisService.listar();
+        return ResponseEntity.ok(animais);
     }
 }

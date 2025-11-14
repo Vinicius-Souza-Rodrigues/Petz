@@ -4,6 +4,8 @@ import Backend.Backend.Auth.TokenService;
 import Backend.Backend.PetsAnimais.Dto.AnimaisResponseDto;
 import Backend.Backend.PetsAnimais.Dto.PetsAnimaisDto;
 import Backend.Backend.User.Model.User;
+import Backend.Backend.User.Model.UserJuridico;
+import Backend.Backend.User.Repository.UserJuridicoRepository;
 import Backend.Backend.User.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class PetsAnimaisService {
     private final UserRepository userRepository;
     private final TokenService tokenService;
     private final FavoritosRepository favoritosRepository;
+    private final UserJuridicoRepository userJuridicoRepository;
 
     @Transactional
     public String adicionar(PetsAnimaisDto dto, String token) {
@@ -56,7 +59,41 @@ public class PetsAnimaisService {
     }
 
     public List<AnimaisResponseDto> listar() {
-        AnimaisResponseDto animais = petsAnimaisRepository.findAll().stream().
+        try {
+
+            List<AnimaisResponseDto> animaisLista = petsAnimaisRepository.findAll()
+                    .stream()
+                    .map(animal -> {
+
+                        User usuario = animal.getUsuario();
+
+                        UserJuridico juridico = userJuridicoRepository
+                                .findByUsuarioId(usuario.getId())
+                                .orElseThrow(() -> new RuntimeException("Usuário jurídico não encontrado"));
+
+                        return new AnimaisResponseDto(
+                                animal.getId(),
+                                animal.getNome(),
+                                animal.getSexo(),
+                                animal.getPorte(),
+                                animal.getPeso(),
+                                animal.getIdade(),
+                                animal.getMicrochip(),
+                                animal.getEspecie(),
+                                animal.getRaca(),
+                                animal.getLocalizacao(),
+                                animal.getDescricao(),
+                                usuario.getId(),
+                                juridico.getRazao_social()
+                        );
+                    })
+                    .toList();
+
+            return animaisLista;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao listar animais");
+        }
     }
 
     public String favoritarAnimal(UUID animalId, String token) {
